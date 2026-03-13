@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile | Marron Jade Escala</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2d3436;
+            --accent-color: #0984e3; 
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --border-color: #dcdde1;
+            --github-color: #24292e;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 40px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .header-text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .header-text h1 {
+            font-size: 2.8rem;
+            margin: 0;
+            letter-spacing: -1px;
+            color: var(--primary-color);
+        }
+
+        .header-text p {
+            font-size: 1.2rem;
+            color: #636e72;
+            margin: 5px 0 20px 0;
+        }
+
+        .profile-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            width: 300px;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background-color: #eee;
+        }
+
+        .profile-info { font-size: 0.9rem; }
+        .profile-info div {
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #f1f1f1;
+            padding-bottom: 4px;
+        }
+
+        .label {
+            font-weight: 600;
+            color: #b2bec3;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+        }
+
+        /* --- TABS --- */
+        input[type="radio"] { display: none; }
+
+        .tab-nav {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .tab-label {
+            background: #dfe6e9;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #2d3436;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #tab1:checked ~ .tab-nav label[for="tab1"],
+        #tab2:checked ~ .tab-nav label[for="tab2"] {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .content-section {
+            display: none; 
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        #tab1:checked ~ #about-content,
+        #tab2:checked ~ #interest-content {
+            display: block;
+        }
+
+        /* --- NEW STATIC SECTIONS --- */
+        .static-section {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            border-left: 4px solid var(--accent-color);
+            padding-left: 15px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Projects List */
+        .project-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        .project-item:last-child { border-bottom: none; }
+        .project-info strong { display: block; color: var(--primary-color); }
+        .project-info small { color: #636e72; }
+        .status-tag {
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            background: #fff9db;
+            color: #f08c00;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        /* Personal Links */
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .link-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 600;
+            transition: 0.2s;
+            font-size: 0.9rem;
+        }
+        .link-card:hover {
+            background: #f1f2f6;
+            transform: translateY(-2px);
+            border-color: var(--accent-color);
+        }
+
+        /* Existing Helpers */
+        .tech-stack { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+        .lang-tag { background: #2d3436; color: white; padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+        .bio-list { list-style: none; padding: 0; }
+        .bio-list li { padding: 15px 0; border-bottom: 1px solid #f1f1f1; display: flex; align-items: flex-start; }
+        .bio-list span { margin-right: 20px; font-size: 1.8rem; min-width: 40px; text-align: center; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 650px) {
+            header { flex-direction: column; text-align: center; }
+            .profile-card { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="header-text">
+            <h1>Student Profile</h1>
+            <p>Computer Science Portfolio</p>
+            <p style="font-style: italic; font-size: 0.9rem; color: #b2bec3; max-width: 400px;">
+                "Exploring the intersection of technology, storytelling, and digital entertainment."
+            </p>
+        </div>
+
+        <div class="profile-card">          
+            <img src="Jadeeee.png" alt="Jade" class="profile-img">
+            <div class="profile-info">
+                <div><span class="label">Name</span> <span>Marron Jade C. Escala</span></div>
+                <div><span class="label">Pronouns</span> <span>He / Him</span></div>
+                <div><span class="label">ID Number</span> <span>S-2247-09-224709</span></div>
+                <div><span class="label">Course</span> <span>BSCS-1C</span></div>
+            </div>
+        </div>
+    </header>
+
+    <input type="radio" name="profile-tabs" id="tab1" checked>
+    <input type="radio" name="profile-tabs" id="tab2">
+
+    <div class="tab-nav">
+        <label for="tab1" class="tab-label">About Me</label>
+        <label for="tab2" class="tab-label">Interests</label>
+    </div>
+
+    <!-- TABS CONTENT -->
+    <div id="about-content" class="content-section">
+        <h3>Current Education</h3>
+        <p>Currently a student at <strong>Cavite State University Silang</strong>, focusing on fundamental computer science principles.</p>
+        <h3 style="margin-top:20px">Programming Languages</h3>
+        <div class="tech-stack">
+            <span class="lang-tag" style="background:#e34c26">HTML</span>
+            <span class="lang-tag" style="background:#264de4">CSS</span>
+            <span class="lang-tag" style="background:#f7df1e; color:black;">JAVASCRIPT</span>
+            <span class="lang-tag" style="background:#00599c">C++</span>
+            <span class="lang-tag" style="background:#5382a1">JAVA</span>
+        </div>
+    </div>
+
+    <div id="interest-content" class="content-section">
+        <h3>Hobbies & Passions</h3>
+        <ul class="bio-list">
+            <li><span>🎮</span> <div class="bio-content"><strong>Gamer</strong><small>Console, Mobile, PC, and Board Games.</small></div></li>
+            <li><span>📺</span> <div class="bio-content"><strong>Anime Fan</strong><small>Romcom, Fantasy, and Isekai.</small></div></li>
+            <li><span>🎵</span> <div class="bio-content"><strong>Music</strong><small>Favorite Artist: Ado</small></div></li>
+        </ul>
+    </div>
+
+    <div class="static-section">
+        <h3>Current Projects</h3>
+        <div class="project-item">
+            <div class="project-info">
+                <strong>Personal Portfolio Website</strong>
+                <small>Building a modern, responsive landing page using HTML and CSS.</small>
+            </div>
+            <span class="status-tag">IN PROGRESS</span>
+        </div>
+        <div class="project-item">
+            <div class="project-info">
+                <strong>CS Fundamental Exercises</strong>
+                <small>Practicing C++ and Java logic for academic requirements.</small>
+            </div>
+            <span class="status-tag">ACTIVE</span>
+        </div>
+    </div>
+
+    <div class="static-section">
+        <h3>Personal Links</h3>
+        <div class="link-grid">
+            <!-- Replace the # with your real URLs -->
+            <a href="https://github.com/Jade-08" class="link-card" target="_blank">
+                <span>🐙</span> GitHub
+            </a>
+            <a href="https://mail.google.com/mail/u/0/#inbox?compose=DmwnWrRttWSfCBVPpzJHNZNRjLtthJtkjCzlJPwgTGWTwZwrWQlZRNKSPZTssWlBVWnWGKmdMJLb" class="link-card">
+                <span>📧</span> Email Me
+            </a>
+            <a href="https://www.linkedin.com/in/marron-jade-escala-306459394" class="link-card">
+                <span>💼</span> LinkedIn
+            </a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
