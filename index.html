@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Profile | Marron Jade Escala</title>
+    <title>Student Portfolio | Marron Jade Escala</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,6 +13,7 @@
             --card-bg: #ffffff;
             --border-color: #dcdde1;
             --github-color: #24292e;
+            --success-color: #00b894;
         }
 
         body {
@@ -21,12 +22,52 @@
             color: var(--primary-color);
             line-height: 1.6;
             margin: 0;
-            padding: 40px 20px;
+            display: flex;
         }
 
-        .container {
-            max-width: 850px;
-            margin: 0 auto;
+        /* --- SIDEBAR NAVIGATION --- */
+        .sidebar {
+            width: 250px;
+            background: var(--primary-color);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            padding: 30px 20px;
+            box-sizing: border-box;
+            z-index: 100;
+        }
+
+        .sidebar h2 {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 12px 15px;
+            color: #b2bec3;
+            text-decoration: none;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        /* --- MAIN CONTENT AREA --- */
+        .main-content {
+            margin-left: 250px;
+            padding: 40px;
+            width: 100%;
+            max-width: 1000px;
         }
 
         header {
@@ -38,25 +79,9 @@
             flex-wrap: wrap;
         }
 
-        .header-text {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .header-text h1 {
-            font-size: 2.8rem;
-            margin: 0;
-            letter-spacing: -1px;
-            color: var(--primary-color);
-        }
-
-        .header-text p {
-            font-size: 1.2rem;
-            color: #636e72;
-            margin: 5px 0 20px 0;
-        }
+        .header-text { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .header-text h1 { font-size: 2.8rem; margin: 0; letter-spacing: -1px; color: var(--primary-color); }
+        .header-text p { font-size: 1.2rem; color: #636e72; margin: 5px 0 20px 0; }
 
         .profile-card {
             background: var(--card-bg);
@@ -85,22 +110,28 @@
             padding-bottom: 4px;
         }
 
-        .label {
-            font-weight: 600;
-            color: #b2bec3;
-            text-transform: uppercase;
-            font-size: 0.7rem;
+        .label { font-weight: 600; color: #b2bec3; text-transform: uppercase; font-size: 0.7rem; }
+
+        /* --- PAGE SWITCHING LOGIC --- */
+        input[name="main-nav"] { display: none; }
+        .page-section { display: none; animation: fadeIn 0.4s ease; }
+
+        #nav-home:checked ~ .sidebar label[for="nav-home"],
+        #nav-dash:checked ~ .sidebar label[for="nav-dash"],
+        #nav-upload:checked ~ .sidebar label[for="nav-upload"] {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        #nav-home:checked ~ .main-content #home-page,
+        #nav-dash:checked ~ .main-content #dashboard-page,
+        #nav-upload:checked ~ .main-content #upload-page {
+            display: block;
         }
 
         /* --- TABS --- */
-        input[type="radio"] { display: none; }
-
-        .tab-nav {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
+        input[name="profile-tabs"] { display: none; }
+        .tab-nav { display: flex; gap: 15px; margin-bottom: 20px; }
         .tab-label {
             background: #dfe6e9;
             padding: 10px 20px;
@@ -108,14 +139,12 @@
             font-size: 0.85rem;
             font-weight: 600;
             color: #2d3436;
-            text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
 
         #tab1:checked ~ .tab-nav label[for="tab1"],
         #tab2:checked ~ .tab-nav label[for="tab2"] {
-            background: var(--accent-color);
+            background: var(--primary-color);
             color: white;
         }
 
@@ -126,182 +155,292 @@
             border-radius: 12px;
             border: 1px solid var(--border-color);
             margin-bottom: 20px;
-            animation: fadeIn 0.4s ease;
         }
 
         #tab1:checked ~ #about-content,
-        #tab2:checked ~ #interest-content {
-            display: block;
+        #tab2:checked ~ #interest-content { display: block; }
+
+        /* --- SKILLS GRID --- */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
         }
 
-        /* --- NEW STATIC SECTIONS --- */
-        .static-section {
-            background: var(--card-bg);
-            padding: 30px;
+        .skill-category {
+            background: #f1f2f6;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        .skill-category h4 {
+            margin: 0 0 10px 0;
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            text-transform: uppercase;
+        }
+
+        .skill-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.85rem;
+            color: #636e72;
+        }
+
+        .skill-list li {
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+        }
+
+        .skill-list li::before {
+            content: "•";
+            color: var(--accent-color);
+            margin-right: 8px;
+        }
+
+        /* --- UPLOAD FORMS --- */
+        .upload-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 5px; color: #636e72; }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: inherit;
+        }
+        .btn-submit {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        /* --- DASHBOARD STATS --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
             border-radius: 12px;
             border: 1px solid var(--border-color);
-            margin-bottom: 20px;
+            text-align: center;
         }
+        .stat-card h4 { margin: 0; font-size: 0.8rem; color: #636e72; }
+        .stat-card p { margin: 10px 0 0; font-size: 1.8rem; font-weight: 600; color: var(--accent-color); }
 
-        h3 {
-            border-left: 4px solid var(--accent-color);
-            padding-left: 15px;
-            margin-top: 0;
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Projects List */
-        .project-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid #f1f1f1;
-        }
-        .project-item:last-child { border-bottom: none; }
+        /* --- SHARED STYLES --- */
+        .static-section { background: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 20px; }
+        h3 { border-left: 4px solid var(--accent-color); padding-left: 15px; margin-top: 0; font-size: 1.1rem; text-transform: uppercase; }
+        .project-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f1f1f1; }
         .project-info strong { display: block; color: var(--primary-color); }
         .project-info small { color: #636e72; }
-        .status-tag {
-            font-size: 0.7rem;
-            padding: 4px 10px;
-            background: #fff9db;
-            color: #f08c00;
-            border-radius: 4px;
-            font-weight: bold;
-        }
+        .status-tag { font-size: 0.7rem; padding: 4px 10px; background: #fff9db; color: #f08c00; border-radius: 4px; font-weight: bold; }
+        .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+        .link-card { display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; text-decoration: none; color: var(--primary-color); font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
+        .link-card:hover { background: #f1f2f6; border-color: var(--accent-color); transform: translateY(-3px); }
+        .tech-stack { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+        .lang-tag { background: #2d3436; color: white; padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Personal Links */
-        .link-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-        }
-        .link-card {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            text-decoration: none;
-            color: var(--primary-color);
-            font-weight: 600;
-            transition: 0.2s;
-            font-size: 0.9rem;
-        }
-        .link-card:hover {
-            background: #f1f2f6;
-            transform: translateY(-2px);
-            border-color: var(--accent-color);
-        }
-
-        /* Existing Helpers */
-        .tech-stack { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
-        .lang-tag { background: #2d3436; color: white; padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
-        .bio-list { list-style: none; padding: 0; }
-        .bio-list li { padding: 15px 0; border-bottom: 1px solid #f1f1f1; display: flex; align-items: flex-start; }
-        .bio-list span { margin-right: 20px; font-size: 1.8rem; min-width: 40px; text-align: center; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 650px) {
-            header { flex-direction: column; text-align: center; }
+        @media (max-width: 768px) {
+            .sidebar { width: 70px; padding: 20px 10px; }
+            .sidebar h2, .nav-item span { display: none; }
+            .main-content { margin-left: 70px; padding: 20px; }
+            header { flex-direction: column; }
             .profile-card { width: 100%; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <div class="header-text">
-            <h1>Student Profile</h1>
-            <p>Computer Science Portfolio</p>
-            <p style="font-style: italic; font-size: 0.9rem; color: #b2bec3; max-width: 400px;">
-                "Exploring the intersection of technology, storytelling, and digital entertainment."
-            </p>
-        </div>
+    <!-- MAIN NAVIGATION LOGIC -->
+    <input type="radio" name="main-nav" id="nav-home" checked>
+    <input type="radio" name="main-nav" id="nav-dash">
+    <input type="radio" name="main-nav" id="nav-upload">
 
-        <div class="profile-card">          
-            <img src="Jadeeee.png" alt="Jade" class="profile-img">
-            <div class="profile-info">
-                <div><span class="label">Name</span> <span>Marron Jade C. Escala</span></div>
-                <div><span class="label">Pronouns</span> <span>He / Him</span></div>
-                <div><span class="label">ID Number</span> <span>S-2247-09-224709</span></div>
-                <div><span class="label">Course</span> <span>BSCS-1C</span></div>
+    <div class="sidebar">
+        <h2>Portfolio</h2>
+        <label for="nav-home" class="nav-item">🏠 <span>Home</span></label>
+        <label for="nav-dash" class="nav-item">📊 <span>Dashboard</span></label>
+        <label for="nav-upload" class="nav-item">📤 <span>Uploads</span></label>
+    </div>
+
+    <div class="main-content">
+
+        <!-- PAGE 1: HOME -->
+        <div id="home-page" class="page-section">
+            <header>
+                <div class="header-text">
+                    <h1>Student Profile</h1>
+                    <p>Computer Science Portfolio</p>
+                    <p style="font-style: italic; font-size: 0.9rem; color: #b2bec3; max-width: 400px;">
+                        "Exploring the intersection of technology, storytelling, and digital entertainment."
+                    </p>
+                </div>
+
+                <div class="profile-card">          
+                    <img src="Jadeeee.png" alt="Jade" class="profile-img">
+                    <div class="profile-info">
+                        <div><span class="label">Name</span> <span>Marron Jade C. Escala</span></div>
+                        <div><span class="label">Pronouns</span> <span>He / Him</span></div>
+                        <div><span class="label">ID Number</span> <span>251100253</span></div>
+                        <div><span class="label">Course</span> <span>BSCS-1C</span></div>
+                    </div>
+                </div>
+            </header>
+
+            <input type="radio" name="profile-tabs" id="tab1" checked>
+            <input type="radio" name="profile-tabs" id="tab2">
+            <div class="tab-nav">
+                <label for="tab1" class="tab-label">About Me</label>
+                <label for="tab2" class="tab-label">Interests</label>
+            </div>
+
+            <div id="about-content" class="content-section">
+                <h3>Current Education</h3>
+                <p>Currently a student at <strong>Cavite State University Silang</strong>, focusing on fundamental computer science principles.</p>
+                
+                <h3 style="margin-top:20px">Programming Languages</h3>
+                <div class="tech-stack">
+                    <span class="lang-tag" style="background:#e34c26">HTML</span>
+                    <span class="lang-tag" style="background:#264de4">CSS</span>
+                    <span class="lang-tag" style="background:#f7df1e; color:black;">JS</span>
+                    <span class="lang-tag" style="background:#00599c">C++</span>
+                    <span class="lang-tag" style="background:#5382a1">JAVA</span>
+                </div>
+
+                <h3 style="margin-top: 25px;">Skills</h3>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h4>Technical</h4>
+                        <ul class="skill-list">
+                            <li>Web Layout Design</li>
+                            <li>Basic Logic (C++, Java)</li>
+                            <li>Git/GitHub Basics</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h4>Creative</h4>
+                        <ul class="skill-list">
+                            <li>Digital Storytelling</li>
+                            <li>UI Concepts</li>
+                            <li>Photo Composition</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h4>Soft Skills</h4>
+                        <ul class="skill-list">
+                            <li>Problem Solving</li>
+                            <li>Time Management</li>
+                            <li>Fast Learner</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="interest-content" class="content-section">
+                <h3>Hobbies & Passions</h3>
+                <p>🎮 Gaming   |   📺 Anime   |   🎵 Music (Ado)   |   👨🏻‍💻 Computer Programming</p>
+            </div>
+
+            <div class="static-section">
+                <h3>Current Projects</h3>
+                <div class="project-item">
+                    <div class="project-info">
+                        <strong>Personal Portfolio Website</strong>
+                        <small>Building a modern, responsive landing page using HTML and CSS.</small>
+                    </div>
+                    <span class="status-tag">IN PROGRESS</span>
+                </div>
+                <div class="project-item">
+                    <div class="project-info">
+                        <strong>CS Fundamental Exercises</strong>
+                        <small>Practicing C++ and Java logic for academic requirements.</small>
+                    </div>
+                    <span class="status-tag" style="background:#e7f5ff; color:#228be6;">ACTIVE</span>
+                </div>
+            </div>
+
+            <div class="static-section">
+                <h3>Personal Links</h3>
+                <div class="link-grid">
+                    <a href="https://github.com/Jade-08" class="link-card" target="_blank"><span>🐙</span> GitHub</a>
+                    
+                    <!-- FUNCTIONAL GMAIL LINK ADDED HERE -->
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=jadeescala010404@gmail.com" class="link-card" target="_blank">
+                        <span>📧</span> Email Me
+                    </a>
+
+                    <a href="https://linkedin.com/in/marron-jade-escala-306459394" class="link-card" target="_blank"><span>💼</span> LinkedIn</a>
+                </div>
             </div>
         </div>
-    </header>
 
-    <input type="radio" name="profile-tabs" id="tab1" checked>
-    <input type="radio" name="profile-tabs" id="tab2">
-
-    <div class="tab-nav">
-        <label for="tab1" class="tab-label">About Me</label>
-        <label for="tab2" class="tab-label">Interests</label>
-    </div>
-
-    <!-- TABS CONTENT -->
-    <div id="about-content" class="content-section">
-        <h3>Current Education</h3>
-        <p>Currently a student at <strong>Cavite State University Silang</strong>, focusing on fundamental computer science principles.</p>
-        <h3 style="margin-top:20px">Programming Languages</h3>
-        <div class="tech-stack">
-            <span class="lang-tag" style="background:#e34c26">HTML</span>
-            <span class="lang-tag" style="background:#264de4">CSS</span>
-            <span class="lang-tag" style="background:#f7df1e; color:black;">JAVASCRIPT</span>
-            <span class="lang-tag" style="background:#00599c">C++</span>
-            <span class="lang-tag" style="background:#5382a1">JAVA</span>
-        </div>
-    </div>
-
-    <div id="interest-content" class="content-section">
-        <h3>Hobbies & Passions</h3>
-        <ul class="bio-list">
-            <li><span>🎮</span> <div class="bio-content"><strong>Gamer</strong><small>Console, Mobile, PC, and Board Games.</small></div></li>
-            <li><span>📺</span> <div class="bio-content"><strong>Anime Fan</strong><small>Romcom, Fantasy, and Isekai.</small></div></li>
-            <li><span>🎵</span> <div class="bio-content"><strong>Music</strong><small>Favorite Artist: Ado</small></div></li>
-        </ul>
-    </div>
-
-    <div class="static-section">
-        <h3>Current Projects</h3>
-        <div class="project-item">
-            <div class="project-info">
-                <strong>Personal Portfolio Website</strong>
-                <small>Building a modern, responsive landing page using HTML and CSS.</small>
+        <!-- PAGE 2: DASHBOARD -->
+        <div id="dashboard-page" class="page-section">
+            <h1>Academic Dashboard</h1>
+            <div class="stats-grid">
+                <div class="stat-card"><h4>Quizzes</h4><p>0</p></div>
+                <div class="stat-card"><h4>Lab Works</h4><p>0</p></div>
+                <div class="stat-card"><h4>Exams</h4><p>0</p></div>
             </div>
-            <span class="status-tag">IN PROGRESS</span>
-        </div>
-        <div class="project-item">
-            <div class="project-info">
-                <strong>CS Fundamental Exercises</strong>
-                <small>Practicing C++ and Java logic for academic requirements.</small>
+            <div class="static-section">
+                <h3>Recent Activity</h3>
+                <p style="color: #636e72; text-align: center; padding: 20px;">No files uploaded yet. Go to the Uploads tab to start.</p>
             </div>
-            <span class="status-tag">ACTIVE</span>
+        </div>
+
+        <!-- PAGE 3: UPLOAD PAGES -->
+        <div id="upload-page" class="page-section">
+            <h1>Submission Portal</h1>
+            <div class="upload-grid">
+                <div class="static-section">
+                    <h3>Quiz Upload</h3>
+                    <form onsubmit="event.preventDefault(); alert('Quiz Submitted!');">
+                        <div class="form-group"><label>Quiz Title</label><input type="text" placeholder="Quiz 1: HTML" required></div>
+                        <div class="form-group"><label>Source Code</label><input type="file" required></div>
+                        <div class="form-group"><label>Proof (Image)</label><input type="file" accept="image/*" required></div>
+                        <button type="submit" class="btn-submit">Submit Quiz</button>
+                    </form>
+                </div>
+                <div class="static-section">
+                    <h3>Lab Work Upload</h3>
+                    <form onsubmit="event.preventDefault(); alert('Lab Work Submitted!');">
+                        <div class="form-group"><label>Lab Title</label><textarea rows="2"></textarea></div>
+                        <div class="form-group"><label>File Upload</label><input type="file" required></div>
+                        <div class="form-group"><label>Screenshot Proof</label><input type="file" accept="image/*" required></div>
+                        <button type="submit" class="btn-submit" style="background: var(--primary-color);">Submit Lab Work</button>
+                    </form>
+                </div>
+                <div class="static-section">
+                    <h3>Major Exam Upload</h3>
+                    <form onsubmit="event.preventDefault(); alert('Exam Saved!');">
+                        <div class="form-group"><label>Exam Title</label><input type="text" placeholder="Midterm"></div>
+                        <div class="form-group"><label>Project File</label><input type="file" required></div>
+                        <div class="form-group"><label>Compliance Image</label><input type="file" accept="image/*" required></div>
+                        <button type="submit" class="btn-submit" style="background: var(--success-color);">Submit Exam</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-
-    <div class="static-section">
-        <h3>Personal Links</h3>
-        <div class="link-grid">
-            <!-- Replace the # with your real URLs -->
-            <a href="https://github.com/Jade-08" class="link-card" target="_blank">
-                <span>🐙</span> GitHub
-            </a>
-            <a href="https://mail.google.com/mail/u/0/#inbox?compose=DmwnWrRttWSfCBVPpzJHNZNRjLtthJtkjCzlJPwgTGWTwZwrWQlZRNKSPZTssWlBVWnWGKmdMJLb" class="link-card">
-                <span>📧</span> Email Me
-            </a>
-            <a href="https://www.linkedin.com/in/marron-jade-escala-306459394" class="link-card">
-                <span>💼</span> LinkedIn
-            </a>
-        </div>
-    </div>
-
-</div>
-
 </body>
 </html>
