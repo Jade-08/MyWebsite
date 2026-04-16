@@ -25,7 +25,6 @@
             display: flex;
         }
 
-        /* --- SIDEBAR NAVIGATION --- */
         .sidebar {
             width: 250px;
             background: var(--primary-color);
@@ -62,7 +61,6 @@
             color: white;
         }
 
-        /* --- MAIN CONTENT AREA --- */
         .main-content {
             margin-left: 250px;
             padding: 40px;
@@ -112,7 +110,6 @@
 
         .label { font-weight: 600; color: #b2bec3; text-transform: uppercase; font-size: 0.7rem; }
 
-        /* --- PAGE SWITCHING LOGIC --- */
         input[name="main-nav"] { display: none; }
         .page-section { display: none; animation: fadeIn 0.4s ease; }
 
@@ -129,7 +126,6 @@
             display: block;
         }
 
-        /* --- TABS --- */
         input[name="profile-tabs"] { display: none; }
         .tab-nav { display: flex; gap: 15px; margin-bottom: 20px; }
         .tab-label {
@@ -160,7 +156,6 @@
         #tab1:checked ~ #about-content,
         #tab2:checked ~ #interest-content { display: block; }
 
-        /* --- SKILLS GRID --- */
         .skills-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -202,7 +197,6 @@
             margin-right: 8px;
         }
 
-        /* --- UPLOAD FORMS --- */
         .upload-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -216,6 +210,7 @@
             border: 1px solid var(--border-color);
             border-radius: 6px;
             font-family: inherit;
+            box-sizing: border-box;
         }
         .btn-submit {
             background: var(--accent-color);
@@ -228,7 +223,6 @@
             width: 100%;
         }
 
-        /* --- DASHBOARD STATS --- */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -245,19 +239,116 @@
         .stat-card h4 { margin: 0; font-size: 0.8rem; color: #636e72; }
         .stat-card p { margin: 10px 0 0; font-size: 1.8rem; font-weight: 600; color: var(--accent-color); }
 
-        /* --- SHARED STYLES --- */
         .static-section { background: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 20px; }
         h3 { border-left: 4px solid var(--accent-color); padding-left: 15px; margin-top: 0; font-size: 1.1rem; text-transform: uppercase; }
         .project-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f1f1f1; }
         .project-info strong { display: block; color: var(--primary-color); }
         .project-info small { color: #636e72; }
         .status-tag { font-size: 0.7rem; padding: 4px 10px; background: #fff9db; color: #f08c00; border-radius: 4px; font-weight: bold; }
-        .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
-        .link-card { display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; text-decoration: none; color: var(--primary-color); font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
-        .link-card:hover { background: #f1f2f6; border-color: var(--accent-color); transform: translateY(-3px); }
-        .tech-stack { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
-        .lang-tag { background: #2d3436; color: white; padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; }
         
+        .activity-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .activity-table th { text-align: left; font-size: 0.75rem; color: #b2bec3; text-transform: uppercase; padding: 10px; border-bottom: 1px solid var(--border-color); }
+        .activity-table td { padding: 12px 10px; font-size: 0.9rem; border-bottom: 1px solid #f1f1f1; }
+        
+        .file-btn { 
+            background: #f1f2f6; 
+            color: var(--accent-color); 
+            border: 1px solid var(--border-color); 
+            padding: 5px 10px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 0.8rem; 
+            font-weight: 600;
+        }
+        .file-btn:hover { background: var(--accent-color); color: white; }
+
+        .clear-btn { background: #ff7675; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.7rem; float: right; }
+
+        /* ── FILE VIEWER MODAL ── */
+        #file-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        #file-modal.open { display: flex; }
+        #modal-box {
+            background: #1e1e2e;
+            border-radius: 14px;
+            width: 90%;
+            max-width: 860px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        #modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: #2d2d3f;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        #modal-header span { opacity: 0.6; font-size: 0.75rem; font-weight: 400; margin-left: 8px; }
+        #modal-close {
+            background: #ff5f57;
+            border: none;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            line-height: 28px;
+            text-align: center;
+        }
+        #modal-body {
+            flex: 1;
+            overflow: auto;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+        }
+        #modal-body video,
+        #modal-body audio { width: 100%; border-radius: 8px; }
+        #modal-body img { max-width: 100%; max-height: 65vh; border-radius: 8px; }
+        #modal-body iframe { width: 100%; height: 65vh; border: none; border-radius: 8px; background: white; }
+        #modal-body pre {
+            color: #cdd6f4;
+            font-family: 'Courier New', monospace;
+            font-size: 0.82rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin: 0;
+            width: 100%;
+        }
+        #modal-footer {
+            padding: 12px 20px;
+            background: #2d2d3f;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .modal-dl-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (max-width: 768px) {
@@ -271,7 +362,6 @@
 </head>
 <body>
 
-    <!-- MAIN NAVIGATION LOGIC -->
     <input type="radio" name="main-nav" id="nav-home" checked>
     <input type="radio" name="main-nav" id="nav-dash">
     <input type="radio" name="main-nav" id="nav-upload">
@@ -320,11 +410,11 @@
                 
                 <h3 style="margin-top:20px">Programming Languages</h3>
                 <div class="tech-stack">
-                    <span class="lang-tag" style="background:#e34c26">HTML</span>
-                    <span class="lang-tag" style="background:#264de4">CSS</span>
-                    <span class="lang-tag" style="background:#f7df1e; color:black;">JS</span>
-                    <span class="lang-tag" style="background:#00599c">C++</span>
-                    <span class="lang-tag" style="background:#5382a1">JAVA</span>
+                    <span class="lang-tag" style="background:#e34c26; color:white; padding:5px 12px; border-radius:4px; font-size:0.8rem; margin-right:5px;">HTML</span>
+                    <span class="lang-tag" style="background:#264de4; color:white; padding:5px 12px; border-radius:4px; font-size:0.8rem; margin-right:5px;">CSS</span>
+                    <span class="lang-tag" style="background:#f7df1e; color:black; padding:5px 12px; border-radius:4px; font-size:0.8rem; margin-right:5px;">JS</span>
+                    <span class="lang-tag" style="background:#00599c; color:white; padding:5px 12px; border-radius:4px; font-size:0.8rem; margin-right:5px;">C++</span>
+                    <span class="lang-tag" style="background:#5382a1; color:white; padding:5px 12px; border-radius:4px; font-size:0.8rem; margin-right:5px;">JAVA</span>
                 </div>
 
                 <h3 style="margin-top: 25px;">Skills</h3>
@@ -381,15 +471,10 @@
 
             <div class="static-section">
                 <h3>Personal Links</h3>
-                <div class="link-grid">
-                    <a href="https://github.com/Jade-08" class="link-card" target="_blank"><span>🐙</span> GitHub</a>
-                    
-                    <!-- FUNCTIONAL GMAIL LINK ADDED HERE -->
-                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=jadeescala010404@gmail.com" class="link-card" target="_blank">
-                        <span>📧</span> Email Me
-                    </a>
-
-                    <a href="https://linkedin.com/in/marron-jade-escala-306459394" class="link-card" target="_blank"><span>💼</span> LinkedIn</a>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                    <a href="https://github.com/Jade-08" style="text-decoration:none; color:inherit; border:1px solid #dcdde1; padding:12px; border-radius:8px; display:flex; align-items:center; gap:10px; font-weight:600;" target="_blank">🐙 GitHub</a>
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=jadeescala010404@gmail.com" style="text-decoration:none; color:inherit; border:1px solid #dcdde1; padding:12px; border-radius:8px; display:flex; align-items:center; gap:10px; font-weight:600;" target="_blank">📧 Email Me</a>
+                    <a href="https://linkedin.com/in/marron-jade-escala-306459394" style="text-decoration:none; color:inherit; border:1px solid #dcdde1; padding:12px; border-radius:8px; display:flex; align-items:center; gap:10px; font-weight:600;" target="_blank">💼 LinkedIn</a>
                 </div>
             </div>
         </div>
@@ -398,49 +483,217 @@
         <div id="dashboard-page" class="page-section">
             <h1>Academic Dashboard</h1>
             <div class="stats-grid">
-                <div class="stat-card"><h4>Quizzes</h4><p>0</p></div>
-                <div class="stat-card"><h4>Lab Works</h4><p>0</p></div>
-                <div class="stat-card"><h4>Exams</h4><p>0</p></div>
+                <div class="stat-card"><h4>Quizzes</h4><p id="count-quiz">0</p></div>
+                <div class="stat-card"><h4>Lab Works</h4><p id="count-lab">0</p></div>
+                <div class="stat-card"><h4>Exams</h4><p id="count-exam">0</p></div>
             </div>
             <div class="static-section">
+                <button class="clear-btn" onclick="clearData()">🗑 Clear All</button>
                 <h3>Recent Activity</h3>
-                <p style="color: #636e72; text-align: center; padding: 20px;">No files uploaded yet. Go to the Uploads tab to start.</p>
+                <div id="activity-log">
+                    <p style="color: #636e72; text-align: center; padding: 20px;">No files uploaded yet.</p>
+                </div>
             </div>
         </div>
 
-        <!-- PAGE 3: UPLOAD PAGES -->
+        <!-- PAGE 3: UPLOAD -->
         <div id="upload-page" class="page-section">
             <h1>Submission Portal</h1>
             <div class="upload-grid">
                 <div class="static-section">
                     <h3>Quiz Upload</h3>
-                    <form onsubmit="event.preventDefault(); alert('Quiz Submitted!');">
-                        <div class="form-group"><label>Quiz Title</label><input type="text" placeholder="Quiz 1: HTML" required></div>
-                        <div class="form-group"><label>Source Code</label><input type="file" required></div>
-                        <div class="form-group"><label>Proof (Image)</label><input type="file" accept="image/*" required></div>
-                        <button type="submit" class="btn-submit">Submit Quiz</button>
-                    </form>
+                    <div class="form-group"><label>Quiz Title</label><input type="text" id="q-title" placeholder="Quiz 1: HTML"></div>
+                    <div class="form-group"><label>Source Code</label><input type="file" id="q-file"></div>
+                    <button class="btn-submit" onclick="handleForm('Quiz','q-title','q-file')">Submit Quiz</button>
                 </div>
                 <div class="static-section">
                     <h3>Lab Work Upload</h3>
-                    <form onsubmit="event.preventDefault(); alert('Lab Work Submitted!');">
-                        <div class="form-group"><label>Lab Title</label><textarea rows="2"></textarea></div>
-                        <div class="form-group"><label>File Upload</label><input type="file" required></div>
-                        <div class="form-group"><label>Screenshot Proof</label><input type="file" accept="image/*" required></div>
-                        <button type="submit" class="btn-submit" style="background: var(--primary-color);">Submit Lab Work</button>
-                    </form>
+                    <div class="form-group"><label>Lab Title</label><input type="text" id="l-title" placeholder="Lab 1: Loops"></div>
+                    <div class="form-group"><label>File Upload</label><input type="file" id="l-file"></div>
+                    <button class="btn-submit" style="background:var(--primary-color)" onclick="handleForm('Lab Work','l-title','l-file')">Submit Lab Work</button>
                 </div>
                 <div class="static-section">
                     <h3>Major Exam Upload</h3>
-                    <form onsubmit="event.preventDefault(); alert('Exam Saved!');">
-                        <div class="form-group"><label>Exam Title</label><input type="text" placeholder="Midterm"></div>
-                        <div class="form-group"><label>Project File</label><input type="file" required></div>
-                        <div class="form-group"><label>Compliance Image</label><input type="file" accept="image/*" required></div>
-                        <button type="submit" class="btn-submit" style="background: var(--success-color);">Submit Exam</button>
-                    </form>
+                    <div class="form-group"><label>Exam Title</label><input type="text" id="e-title" placeholder="Midterm Exam"></div>
+                    <div class="form-group"><label>Project File</label><input type="file" id="e-file"></div>
+                    <button class="btn-submit" style="background:var(--success-color)" onclick="handleForm('Exam','e-title','e-file')">Submit Exam</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- ── IN-PAGE FILE VIEWER MODAL ── -->
+    <div id="file-modal">
+        <div id="modal-box">
+            <div id="modal-header">
+                <div><span id="modal-title">File</span><span id="modal-meta"></span></div>
+                <button id="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div id="modal-body"></div>
+            <div id="modal-footer">
+                <button class="modal-dl-btn" id="modal-dl-btn">⬇ Download</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ── IndexedDB SETUP ── */
+        const DB_NAME   = "PortfolioDB";
+        const STORE     = "submissions";
+        let db;
+
+        const dbReq = indexedDB.open(DB_NAME, 1);
+        dbReq.onupgradeneeded = e => {
+            db = e.target.result;
+            db.createObjectStore(STORE, { keyPath: "id", autoIncrement: true });
+        };
+        dbReq.onsuccess = e => { db = e.target.result; updateDashboard(); };
+
+        /* ── SAVE FILE (base64 so blob URLs work offline) ── */
+        function handleForm(type, titleId, fileId) {
+            const title = document.getElementById(titleId).value.trim();
+            const file  = document.getElementById(fileId).files[0];
+            if (!title) { alert("Please enter a title."); return; }
+            if (!file)  { alert("Please choose a file."); return; }
+
+            const reader = new FileReader();
+            reader.onload = e => {
+                const entry = {
+                    type,
+                    title,
+                    fileName : file.name,
+                    fileType : file.type || "application/octet-stream",
+                    fileData : e.target.result,   // base64 data-URL string
+                    date     : new Date().toLocaleDateString()
+                };
+                const tx = db.transaction([STORE], "readwrite");
+                tx.objectStore(STORE).add(entry);
+                tx.oncomplete = () => {
+                    alert(type + " saved successfully!");
+                    document.getElementById(titleId).value = "";
+                    document.getElementById(fileId).value  = "";
+                    updateDashboard();
+                };
+            };
+            reader.readAsDataURL(file);   // ← base64, not ArrayBuffer
+        }
+
+        /* ── DASHBOARD ── */
+        function updateDashboard() {
+            if (!db) return;
+            const log    = document.getElementById('activity-log');
+            const counts = { Quiz: 0, "Lab Work": 0, Exam: 0 };
+
+            db.transaction([STORE], "readonly")
+              .objectStore(STORE)
+              .getAll()
+              .onsuccess = e => {
+                const data = e.target.result;
+                if (!data.length) {
+                    log.innerHTML = `<p style="color:#636e72;text-align:center;padding:20px">No files uploaded yet.</p>`;
+                } else {
+                    let html = `<table class="activity-table">
+                        <thead><tr><th>Date</th><th>Category</th><th>Title</th><th>File</th><th>Access</th></tr></thead><tbody>`;
+                    [...data].reverse().forEach(item => {
+                        counts[item.type] = (counts[item.type] || 0) + 1;
+                        html += `<tr>
+                            <td>${item.date}</td>
+                            <td><strong>${item.type}</strong></td>
+                            <td>${item.title}</td>
+                            <td style="font-size:0.78rem;color:#636e72">${item.fileName}</td>
+                            <td><button class="file-btn" onclick="openModal(${item.id})">📂 Open</button></td>
+                        </tr>`;
+                    });
+                    html += `</tbody></table>`;
+                    log.innerHTML = html;
+                }
+                document.getElementById('count-quiz').innerText  = counts.Quiz      || 0;
+                document.getElementById('count-lab').innerText   = counts["Lab Work"]|| 0;
+                document.getElementById('count-exam').innerText  = counts.Exam      || 0;
+            };
+        }
+
+        /* ── MODAL VIEWER (opens inside the page) ── */
+        let currentBlobUrl = null;
+
+        function openModal(id) {
+            db.transaction([STORE], "readonly")
+              .objectStore(STORE)
+              .get(id)
+              .onsuccess = e => {
+                const item = e.target.result;
+                const mime = item.fileType || "application/octet-stream";
+
+                // Convert base64 data-URL → Blob → Object URL
+                const base64 = item.fileData.split(",")[1];
+                const bytes  = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+                const blob   = new Blob([bytes], { type: mime });
+                if (currentBlobUrl) URL.revokeObjectURL(currentBlobUrl);
+                currentBlobUrl = URL.createObjectURL(blob);
+
+                // Header info
+                document.getElementById('modal-title').textContent = item.title;
+                document.getElementById('modal-meta').textContent  = ` — ${item.fileName}`;
+
+                // Download button
+                const dlBtn = document.getElementById('modal-dl-btn');
+                dlBtn.onclick = () => {
+                    const a = document.createElement('a');
+                    a.href     = currentBlobUrl;
+                    a.download = item.fileName;
+                    a.click();
+                };
+
+                // Render content
+                const body = document.getElementById('modal-body');
+                body.innerHTML = "";
+
+                if (mime.startsWith("video/")) {
+                    body.innerHTML = `<video controls autoplay><source src="${currentBlobUrl}" type="${mime}">Your browser does not support video.</video>`;
+                } else if (mime.startsWith("audio/")) {
+                    body.innerHTML = `<audio controls autoplay style="width:100%"><source src="${currentBlobUrl}" type="${mime}">Your browser does not support audio.</audio>`;
+                } else if (mime.startsWith("image/")) {
+                    body.innerHTML = `<img src="${currentBlobUrl}" alt="${item.fileName}">`;
+                } else if (mime === "application/pdf") {
+                    body.innerHTML = `<iframe src="${currentBlobUrl}"></iframe>`;
+                } else if (mime.startsWith("text/") || /\.(html|css|js|cpp|java|py|json|xml|csv|md|txt)$/i.test(item.fileName)) {
+                    // Decode text and display with syntax hint
+                    const text = new TextDecoder().decode(bytes);
+                    const pre  = document.createElement('pre');
+                    pre.textContent = text;
+                    body.appendChild(pre);
+                } else {
+                    body.innerHTML = `
+                        <div style="text-align:center;color:#888;padding:40px">
+                            <div style="font-size:3rem">📄</div>
+                            <p style="margin:10px 0 4px;color:#cdd6f4;font-weight:600">${item.fileName}</p>
+                            <p style="font-size:0.8rem">Preview not available for this file type.</p>
+                            <p style="font-size:0.8rem">Use the Download button below.</p>
+                        </div>`;
+                }
+
+                document.getElementById('file-modal').classList.add('open');
+            };
+        }
+
+        function closeModal() {
+            document.getElementById('file-modal').classList.remove('open');
+            document.getElementById('modal-body').innerHTML = "";
+            if (currentBlobUrl) { URL.revokeObjectURL(currentBlobUrl); currentBlobUrl = null; }
+        }
+
+        // Close modal on backdrop click
+        document.getElementById('file-modal').addEventListener('click', e => {
+            if (e.target === document.getElementById('file-modal')) closeModal();
+        });
+
+        /* ── CLEAR ALL ── */
+        function clearData() {
+            if (!confirm("Delete all submission history?")) return;
+            const tx = db.transaction([STORE], "readwrite");
+            tx.objectStore(STORE).clear();
+            tx.oncomplete = () => { alert("Data cleared."); updateDashboard(); };
+        }
+    </script>
 </body>
 </html>
